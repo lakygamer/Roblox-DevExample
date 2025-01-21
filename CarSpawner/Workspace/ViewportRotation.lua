@@ -9,14 +9,14 @@ viewportRotation.__index = viewportRotation
 function viewportRotation:Enable(viewportFrame)
 	
 	local viewportModel = viewportFrame:FindFirstChildWhichIsA("Model")
-	
+	-- Create and Bind Viewport
 	local viewport = {
 		inputChanged = nil;
 		inputBegan = nil;
 		inputEnded = nil;
 	}
 	setmetatable(viewport, viewportRotation)
-	
+	-- Rotate Model based on Mouse
 	viewport.inputChanged = UserInputService.InputChanged:Connect(function(input, gameProcessedEvent)
 		if gameProcessedEvent then return end
 		if input.UserInputType == Enum.UserInputType.MouseMovement then -- runs every time mouse is moved
@@ -36,7 +36,7 @@ function viewportRotation:Enable(viewportFrame)
 			end
 		end
 	end)
-	
+	-- Drag Detection
 	viewport.inputBegan = UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
 		if gameProcessedEvent then return end
 		if input.UserInputType == Enum.UserInputType.MouseButton1 then -- player starts dragging
@@ -44,7 +44,7 @@ function viewportRotation:Enable(viewportFrame)
 			ButtonsHeld["MouseButton1"] = true
 		end
 	end)
-	
+	-- Drag detection ended.
 	viewport.inputEnded = UserInputService.InputEnded:Connect(function(input, gameProcessedEvent)
 		if gameProcessedEvent then return end
 		if input.UserInputType == Enum.UserInputType.MouseButton1 then -- player stops dragging
@@ -56,7 +56,7 @@ function viewportRotation:Enable(viewportFrame)
 	
 	return viewport
 end
-
+-- Disconnect all Events
 function viewportRotation:Disable(viewportFrame)
 	
 	self.inputChanged:Disconnect()
