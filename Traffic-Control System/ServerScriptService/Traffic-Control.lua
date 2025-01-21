@@ -15,6 +15,7 @@ function traffic.pedestrian  (Trafficlights,Walkboxes,on,activetime) -- Set Func
             end)
             --thread.cancel(thread)
         end
+        -- Activate Walk Sign
         for i,v in pairs(Walkboxes) do
             local thread = task.delay(2, function()
                 v.DontWalk.R.Lamp.Enabled = false
@@ -39,6 +40,7 @@ function traffic.pedestrian  (Trafficlights,Walkboxes,on,activetime) -- Set Func
             i = i+1
         until i == activetime
     else
+        -- Reset traffic Lights
         for i,v in pairs(Trafficlights) do
             v.GreenLight.Transparency = 0
             v.GreenLight.SpotLight.Enabled = true
@@ -57,6 +59,7 @@ end
 
 function traffic.Drawbridge (TrafficLight,Gate,Bridge1,Bridge2,on) -- Set Function mode for Drawbridge
     if on then
+        --Set Lights red Activate Alarm
         for i,v in pairs(TrafficLight) do
             v.Green.GLight.Transparency = 0.8
             v.Green.GLight.SpotLight.Enabled = false
@@ -71,6 +74,7 @@ function traffic.Drawbridge (TrafficLight,Gate,Bridge1,Bridge2,on) -- Set Functi
         end
         Bridge1.Parent.Sound.Alarm:Play()
         wait(4)
+        -- Close Gates
         for i,v in pairs(Gate) do
             if v.Parent.Name == "GateR" then
                 v.Parts.Pivot:WaitForChild("HingeConstraint").TargetAngle = 0
@@ -84,6 +88,7 @@ function traffic.Drawbridge (TrafficLight,Gate,Bridge1,Bridge2,on) -- Set Functi
                 end)
             end
         end
+        --Open Bridge
         wait(20)
         Bridge1.RoadPart.BridgeWeld.Enabled = false
         Bridge1.Parent.Sound.Move:Play()
@@ -95,6 +100,7 @@ function traffic.Drawbridge (TrafficLight,Gate,Bridge1,Bridge2,on) -- Set Functi
         wait(2)
         Bridge1.Parent.Sound.Alarm:Stop()
     else
+        -- Reset to Closed State
         Bridge1.Parent.Sound.Alarm:Play()
         Bridge1.Parent.Sound.Move:Play()
         Bridge1.RoadPart.HingeConstraint.TargetAngle = 0
@@ -104,6 +110,7 @@ function traffic.Drawbridge (TrafficLight,Gate,Bridge1,Bridge2,on) -- Set Functi
         Bridge1.Parent.Sound.Move:Stop()
         Bridge1.Parent.Sound.Alarm:Stop()
         Bridge1.RoadPart.BridgeWeld.Enabled = true
+        -- Reopen gates
         for i,v in pairs(TrafficLight) do
             task.delay(2, function()
                 v.Red.RLight.Transparency = 0.8
