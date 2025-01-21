@@ -2,11 +2,13 @@ local Remotes = game:GetService("ReplicatedStorage").RemoteEvents
 local Teleport = Remotes.Teleport
 local Spawner = Remotes.Spawner
 
+-- Teleports Model to Location
 Teleport.OnServerEvent:Connect(function(player,model,location)
     model:PivotTo(location.CFrame)
 end)
 -- Spawn the Car on Server Side and apply customisations for Local Car
 Spawner.OnServerEvent:Connect(function(player:Player,Foldername,Carname,Licenseplate,Bodycolor:BrickColor,Windowcolor:BrickColor,Rimcolor:BrickColor,Liver,LicenseDesign,location:Part)
+    -- Clone Car from Rep
     local Car = game.ReplicatedStorage.Cars:FindFirstChild(Foldername):FindFirstChild(Carname):Clone()
     Car.Parent = game.Workspace
     Car:PivotTo(location.CFrame)
@@ -39,7 +41,7 @@ Spawner.OnServerEvent:Connect(function(player:Player,Foldername,Carname,Licensep
             warn("No Paint found!")
         end
     end
-
+    
     if Bodycolor then -- Set Color
         if Car.Body:FindFirstChild("Paint") then 
             for i,v in pairs(Car.Body.Paint:GetChildren()) do
