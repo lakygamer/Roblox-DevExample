@@ -1,0 +1,2 @@
+# Traffic Control
+The Traffic Control system is set in such way that Traffic Lights can be easily Added or Removed. Those Lights all need to have the same Schema to function correctly and will be handled by the Module Script which will Control the Settings for Lights / Gates and the Bridge.
