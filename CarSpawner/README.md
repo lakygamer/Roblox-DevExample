@@ -1,0 +1,2 @@
+# Car Spawner
+This Car Spawner relies on a Folder Structure inside Replicated Storage. This saves all the Cars which makes the Modification of the GUI modular as to get a new car inside the Spawner it just needs to be added to the Replicated Storage folder with all variables needed.

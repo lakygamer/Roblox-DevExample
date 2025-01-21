@@ -1,0 +1,70 @@
+local Remotes = game:GetService("ReplicatedStorage").RemoteEvents
+local Teleport = Remotes.Teleport
+local Spawner = Remotes.Spawner
+
+Teleport.OnServerEvent:Connect(function(player,model,location)
+    model:PivotTo(location.CFrame)
+end)
+-- Spawn the Car on Server Side and apply customisations for Local Car
+Spawner.OnServerEvent:Connect(function(player:Player,Foldername,Carname,Licenseplate,Bodycolor:BrickColor,Windowcolor:BrickColor,Rimcolor:BrickColor,Liver,LicenseDesign,location:Part)
+    local Car = game.ReplicatedStorage.Cars:FindFirstChild(Foldername):FindFirstChild(Carname):Clone()
+    Car.Parent = game.Workspace
+    Car:PivotTo(location.CFrame)
+    if Licenseplate then -- Add Licenseplate Text to all Plates of Car Model
+        for l,plates in pairs(Car.Body:GetChildren()) do
+            if plates.Name == "Licenseplate" then
+                local split = Licenseplate:split("-")
+                plates.Licenseplate.Letters.Text = split[1]
+                plates.Licenseplate.Numbers.Text = split[2]
+                Car.Settings.Licenseplate.Value = Licenseplate
+            end
+        end
+    end
+    Car.Settings.Owner.Value = player -- Set Owner
+    if Liver then
+        if Car.Body:FindFirstChild("Paint") then  -- Set Texture
+            for i,v in pairs(Car.Body.Paint:GetChildren()) do
+                if v.Name == "Color" then
+                    v.Mesh.TextureId = Liver
+                end
+
+            end
+        elseif Car.Body:FindFirstChild("Body"):FindFirstChild("Paint") then  -- Set Texture of Supparts
+            for i,v in pairs(Car.Body.Body.Paint:GetChildren()) do
+                if v.Name == "Color" then
+                    v.Mesh.TextureId = Liver
+                end
+            end
+        else
+            warn("No Paint found!")
+        end
+    end
+
+    if Bodycolor then -- Set Color
+        if Car.Body:FindFirstChild("Paint") then 
+            for i,v in pairs(Car.Body.Paint:GetChildren()) do
+                if v.Name == "Color" then
+                    v.Mesh.VertexColor =  Bodycolor
+                end
+            end
+        elseif Car.Body:FindFirstChild("Body"):FindFirstChild("Paint") then
+            for i,v in pairs(Car.Body.Body.Paint:GetChildren()) do
+                if v.Name == "Color" then
+                    v.Mesh.VertexColor = Bodycolor
+                end
+            end
+        else
+            warn("No Paint found!")
+        end
+    end
+
+    if LicenseDesign then  -- Set Licenseplate Design
+        if Car.Body:FindFirstChild("Licenseplate") then
+            for l,plates in pairs(Car.Body:GetChildren()) do
+                if plates.Name == "Licenseplate" then
+                    plates.Licenseplate.ImageLabel.Image = LicenseDesign
+                end
+            end
+        end
+    end
+end)
